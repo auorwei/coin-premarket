@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin PreMarket - 数字货币预售平台</title>
+    <style>
+        :root {
+            --primary-color: #2a71d0;
+            --secondary-color: #5d34ec;
+            --accent-color: #00c3a5;
+            --dark-bg: #1a1a2e;
+            --card-bg: #22223b;
+            --light-text: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--accent-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+        
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            background-color: #00a38b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .featured-coins {
+            padding: 4rem 0;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-size: 2rem;
+        }
+        
+        .coin-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .coin-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .coin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            display: flex;
+            align-items: center;
+        }
+        
+        .coin-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .coin-name h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+        
+        .coin-name .coin-symbol {
+            color: #cbd5e0;
+            font-size: 0.9rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .coin-detail {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .detail-label {
+            color: #a0aec0;
+        }
+        
+        .progress-container {
+            margin: 1.5rem 0;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #2d3748;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            border-radius: 5px;
+            width: 65%;
+        }
+        
+        .card-footer {
+            padding: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .time-remaining {
+            font-size: 0.9rem;
+        }
+        
+        .countdown {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .how-it-works {
+            padding: 4rem 0;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .step-card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .testimonials {
+            padding: 4rem 0;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        footer {
+            background-color: #16162a;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        .footer-links a {
+            color: #a0aec0;
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .copyright {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+            }
+            
+            .hero {
+                padding: 2rem 0;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">Coin<span>PreMarket</span></a>
+                <nav>
+                    <ul>
+                        <li><a href="#">首页</a></li>
+                        <li><a href="#featured">热门预售</a></li>
+                        <li><a href="#how-it-works">参与方式</a></li>
+                        <li><a href="#">关于我们</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>发现下一个数字货币明星项目</h1>
+            <p class="subtitle">参与早期代币预售，把握投资先机</p>
+            <a href="#featured" class="cta-button">探索热门预售</a>
+        </div>
+    </section>
+    
+    <section id="featured" class="featured-coins">
+        <div class="container">
+            <h2 class="section-title">热门预售项目</h2>
+            <div class="coin-cards">
+                <div class="coin-card">
+                    <div class="card-header">
+                        <div class="coin-icon">DL</div>
+                        <div class="coin-name">
+                            <h3>DefiLabs</h3>
+                            <div class="coin-symbol">$DLABS</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="coin-detail">
+                            <span class="detail-label">预售价格</span>
+                            <span>1 DLABS = 0.00025 ETH</span>
+                        </div>
+                        <div class="coin-detail">
+                            <span class="detail-label">上线价格</span>
+                            <span>1 DLABS = 0.0005 ETH</span>
+                        </div>
+                        <div class="coin-detail">
+                            <span class="detail-label">已筹集</span>
+                            <span>1,250 ETH / 2,000 ETH</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="detail-label">预售进度</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="time-remaining">
+                            剩余时间: <span class="countdown">3天 05:22:18</span>
+                        </div>
+                        <a href="#" class="cta-button">参与预售</a>
+                    </div>
+                </div>
+                
+                <div class="coin-card">
+                    <div class="card-header">
+                        <div class="coin-icon">MN</div>
+                        <div class="coin-name">
+                            <h3>MetaNetwork</h3>
+                            <div class="coin-symbol">$MNET</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="coin-detail">
+                            <span class="detail-label">预售价格</span>
+                            <span>1 MNET = 0.00012 BNB</span>
+                        </div>
+                        <div class="coin-detail">
+                            <span class="detail-label">上线价格</span>
+                            <span>1 MNET = 0.00030 BNB</span>
+                        </div>
+                        <div class="coin-detail">
+                            <span class="detail-label">已筹集</span>
+                            <span>8,750 BNB / 10,000 BNB</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="detail-label">预售进度</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 87%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="time-remaining">
+                            剩余时间: <span class="countdown">1天 12:45:06</span>
+                        </div>
+                        <a href="#" class="cta-button">参与预售</a>
+                    </div>
+                </div>
+                
+                <div class="coin-card">
+                    <div class="card-header">
+                        <div class="coin-icon">QG</div>
+                        <div class="coin-name">
+                            <h3>QuantumGate</h3>
+                            <div class="coin-symbol">$QGATE</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="coin-detail">
+                            <span class="detail-label">预售价格</span>
+                            <span>1 QGATE = 0.075 USDT</span>
+                        </div>
+                        <div class="coin-detail">
+                            <span class="detail-label">上线价格</span>
+                            <span>1 QGATE = 0.15 USDT</span>
+                        </div>
+                        <div class="coin-detail">
+                            <span class="detail-label">已筹集</span>
+                            <span>925,000 USDT / 2,000,000 USDT</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="detail-label">预售进度</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 46%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="time-remaining">
+                            剩余时间: <span class="countdown">5天 08:10:32</span>
+                        </div>
+                        <a href="#" class="cta-button">参与预售</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">如何参与代币预售</h2>
+            <div class="steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>连接钱包</h3>
+                    <p>使用MetaMask或其他支持的钱包连接到我们的平台，确保您的钱包中有足够的ETH、BNB或USDT。</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>选择项目</h3>
+                    <p>浏览我们精选的预售项目，研究项目详情、团队背景和路线图，选择您感兴趣的项目。</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>参与预售</h3>
+                    <p>输入您想要投资的金额，确认交易，完成后您将收到相应数量的代币。</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>领取代币</h3>
+                    <p>预售结束后，您可以在平台上领取您的代币，或等待代币自动发放到您的钱包地址。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <a href="#" class="logo">Coin<span>PreMarket</span></a>
+            <div class="footer-links">
+                <a href="#">条款与条件</a>
+                <a href="#">隐私政策</a>
+                <a href="#">联系我们</a>
+                <a href="#">常见问题</a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 CoinPreMarket. 保留所有权利。
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 简单的倒计时功能
+        function updateCountdowns() {
+            const countdowns = document.querySelectorAll('.countdown');
+            
+            countdowns.forEach(countdown => {
+                // 获取随机时间，仅用于演示
+                const days = parseInt(countdown.textContent.split('天')[0]);
+                const timeparts = countdown.textContent.split('天')[1].trim().split(':');
+                let hours = parseInt(timeparts[0]);
+                let minutes = parseInt(timeparts[1]);
+                let seconds = parseInt(timeparts[2]);
+                
+                seconds--;
+                
+                if (seconds < 0) {
+                    seconds = 59;
+                    minutes--;
+                }
+                
+                if (minutes < 0) {
+                    minutes = 59;
+                    hours--;
+                }
+                
+                if (hours < 0) {
+                    hours = 23;
+                    days--;
+                }
+                
+                if (days < 0) {
+                    countdown.textContent = "预售已结束";
+                } else {
+                    countdown.textContent = `${days}天 ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                }
+            });
+        }
+        
+        // 每秒更新倒计时
+        setInterval(updateCountdowns, 1000);
+    </script>
+</body>
+</html>
