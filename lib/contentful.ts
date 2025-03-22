@@ -1,4 +1,4 @@
-import { createClient } from 'contentful';
+import { createClient, EntryCollection } from 'contentful';
 
 // 定义Contentful内容模型的类型
 interface ContentfulImage {
@@ -9,18 +9,20 @@ interface ContentfulImage {
   };
 }
 
+interface ContentfulBlogPostFields {
+  title: string;
+  summary: string;
+  content: unknown; // 富文本内容
+  date: string;
+  author: string;
+  featuredImage?: ContentfulImage;
+}
+
 interface ContentfulBlogPost {
   sys: {
     id: string;
   };
-  fields: {
-    title: string;
-    summary: string;
-    content: unknown; // 富文本内容
-    date: string;
-    author: string;
-    featuredImage?: ContentfulImage;
-  };
+  fields: ContentfulBlogPostFields;
 }
 
 // 定义我们的博客文章类型
@@ -42,21 +44,28 @@ const client = createClient({
 
 // 获取博客文章数据
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
-  const response = await client.getEntries({
+  // 使用类型断言来处理排序参数问题
+  const response = await client.getEntries<ContentfulBlogPostFields>({
     content_type: 'blogPost',
-    order: '-fields.date',
+    // 使用数组形式指定排序
+    order: ['-fields.date']
   });
 
+  // 确保我们有数据
+  if (!response.items || response.items.length === 0) {
+    return [];
+  }
+
   // 将Contentful数据转换为我们的博客文章格式
-  return response.items.map((item: ContentfulBlogPost) => {
+  return response.items.map((item) => {
     return {
       id: item.sys.id,
-      title: item.fields.title,
-      summary: item.fields.summary,
+      title: item.fields.title || '',
+      summary: item.fields.summary || '',
       content: item.fields.content,
-      date: item.fields.date,
-      author: item.fields.author,
-      featuredImage: item.fields.featuredImage?.fields?.file?.url || null,
+      date: item.fields.date || '',
+      author: item.fields.author || '',
+      featuredImage: item.fields?.featuredImage?.fields?.file?.url || null,
     };
   });
 }
