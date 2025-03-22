@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { fetchBlogPosts } from '@/lib/contentful';
 import Image from 'next/image';
 
@@ -14,29 +15,33 @@ export default async function Home() {
       </header>
 
       <div className="grid gap-8 md:grid-cols-2">
-        {posts.map((post) => (
-          <article key={post.id} className="border rounded-lg overflow-hidden shadow-md">
-            {post.featuredImage && (
-              <div className="relative h-48 w-full">
-                <Image 
-                  src={`https:${post.featuredImage}`}
-                  alt={post.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
+        {posts.length === 0 ? (
+          <p className="text-center col-span-2 py-10">正在加载内容或没有可显示的博客文章...</p>
+        ) : (
+          posts.map((post) => (
+            <article key={post.id} className="border rounded-lg overflow-hidden shadow-md">
+              {post.featuredImage && (
+                <div className="relative h-48 w-full">
+                  <Image 
+                    src={`https:${post.featuredImage}`}
+                    alt={post.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
+              )}
+              <div className="p-6">
+                <h2 className="text-2xl font-bold mb-2">{post.title}</h2>
+                <div className="flex justify-between text-sm text-gray-500 mb-4">
+                  <span>{new Date(post.date).toLocaleDateString()}</span>
+                  <span>{post.author}</span>
+                </div>
+                <p className="text-gray-700 mb-4">{post.summary}</p>
               </div>
-            )}
-            <div className="p-6">
-              <h2 className="text-2xl font-bold mb-2">{post.title}</h2>
-              <div className="flex justify-between text-sm text-gray-500 mb-4">
-                <span>{new Date(post.date).toLocaleDateString()}</span>
-                <span>{post.author}</span>
-              </div>
-              <p className="text-gray-700 mb-4">{post.summary}</p>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))
+        )}
       </div>
     </main>
   );
