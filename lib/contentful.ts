@@ -17,6 +17,11 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN ?? '',
 });
 
+// 安全地获取属性值的辅助函数
+function getField(obj: any, field: string): any {
+  return obj && typeof obj === 'object' && field in obj ? obj[field] : undefined;
+}
+
 // 获取博客文章数据
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
   try {
@@ -27,22 +32,33 @@ export async function fetchBlogPosts(): Promise<BlogPost[]> {
     });
 
     // 确保我们有数据
-    if (!response.items || response.items.length === 0) {
+    if (!response || !response.items || !Array.isArray(response.items) || response.items.length === 0) {
       return [];
     }
 
     // 将Contentful数据转换为我们的博客文章格式
-    return response.items.map((item) => {
-      const { sys, fields } = item;
+    return response.items.map((item: any): BlogPost => {
+      // 使用我们的辅助函数获取字段值
+      const id = getField(getField(item, 'sys'), 'id') || '';
+      const fields = getField(item, 'fields') || {};
+      const title = getField(fields, 'title') || '';
+      const summary = getField(fields, 'summary') || '';
+      const content = getField(fields, 'content');
+      const date = getField(fields, 'date') || '';
+      const author = getField(fields, 'author') || '';
       
+      // 安全地获取嵌套的featuredImage URL
+      const featuredImage = getField(getField(getField(fields, 'featuredImage'), 'fields'), 'file');
+      const featuredImageUrl = getField(featuredImage, 'url') || null;
+
       return {
-        id: sys.id,
-        title: fields.title || '',
-        summary: fields.summary || '',
-        content: fields.content,
-        date: fields.date || '',
-        author: fields.author || '',
-        featuredImage: fields.featuredImage?.fields?.file?.url || null,
+        id,
+        title,
+        summary,
+        content,
+        date,
+        author,
+        featuredImage: featuredImageUrl
       };
     });
   } catch (error) {
