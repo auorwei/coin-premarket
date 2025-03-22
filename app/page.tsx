@@ -1,5 +1,5 @@
 import { fetchBlogPosts } from '@/lib/contentful';
-//import Image from 'next/image';
+import Image from 'next/image';
 
 // 在Next.js中，这是服务器端组件
 export default async function Home() {
@@ -18,10 +18,12 @@ export default async function Home() {
           <article key={post.id} className="border rounded-lg overflow-hidden shadow-md">
             {post.featuredImage && (
               <div className="relative h-48 w-full">
-                <img 
-                  src={`https:${post.featuredImage}`} 
+                <Image 
+                  src={`https:${post.featuredImage}`}
                   alt={post.title}
-                  className="object-cover w-full h-full"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
             )}

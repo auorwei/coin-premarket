@@ -1,4 +1,4 @@
-import { createClient, EntryCollection } from 'contentful';
+import { createClient } from 'contentful';
 
 // 定义Contentful内容模型的类型
 interface ContentfulImage {
@@ -16,13 +16,6 @@ interface ContentfulBlogPostFields {
   date: string;
   author: string;
   featuredImage?: ContentfulImage;
-}
-
-interface ContentfulBlogPost {
-  sys: {
-    id: string;
-  };
-  fields: ContentfulBlogPostFields;
 }
 
 // 定义我们的博客文章类型
