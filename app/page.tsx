@@ -1,5 +1,5 @@
 import { fetchBlogPosts } from '@/lib/contentful';
-import Image from 'next/image';
+//import Image from 'next/image';
 
 // 在Next.js中，这是服务器端组件
 export default async function Home() {
