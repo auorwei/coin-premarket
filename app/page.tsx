@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { fetchBlogPosts } from '@/lib/contentful';
-import Image from 'next/image';
 
 // 在Next.js中，这是服务器端组件
 export default async function Home() {
@@ -21,14 +19,14 @@ export default async function Home() {
           posts.map((post) => (
             <article key={post.id} className="border rounded-lg overflow-hidden shadow-md">
               {post.featuredImage && (
-				  <div className="relative h-48 w-full">
-					<img 
-					  src={`https:${post.featuredImage}`}
-					  alt={post.title}
-					  className="object-cover w-full h-full"
-					/>
-				  </div>
-				)}
+                <div className="relative h-48 w-full">
+                  <img 
+                    src={`https:${post.featuredImage}`}
+                    alt={post.title}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              )}
               <div className="p-6">
                 <h2 className="text-2xl font-bold mb-2">{post.title}</h2>
                 <div className="flex justify-between text-sm text-gray-500 mb-4">

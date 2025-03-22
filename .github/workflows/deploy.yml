@@ -39,6 +39,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: my-contentful-blog
-          directory: out
-          # 禁用GitHub部署集成，避免权限问题
+          directory: out  # 改为'out'目录，这是Next.js静态导出的默认目录
           githubDeployment: false
