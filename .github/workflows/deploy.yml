@@ -3,6 +3,9 @@ name: Deploy to Cloudflare Pages
 on:
   push:
     branches: [ main ]
+  repository_dispatch:
+    types: [contentful_update]
+ 
   workflow_dispatch:  # 允许手动触发
 
 jobs:
