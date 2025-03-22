@@ -1,14 +1,5 @@
 import { createClient } from 'contentful';
 
-// 定义Contentful内容模型的类型
-interface ContentfulImage {
-  fields: {
-    file: {
-      url: string;
-    };
-  };
-}
-
 // 定义我们的博客文章类型
 export interface BlogPost {
   id: string;
@@ -29,7 +20,7 @@ const client = createClient({
 // 获取博客文章数据
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
   try {
-    // 使用any类型来绕过TypeScript类型检查问题
+    // 使用没有类型标注的方式调用API
     const response = await client.getEntries({
       content_type: 'blogPost',
       order: ['-fields.date']
@@ -41,15 +32,17 @@ export async function fetchBlogPosts(): Promise<BlogPost[]> {
     }
 
     // 将Contentful数据转换为我们的博客文章格式
-    return response.items.map((item: any) => {
+    return response.items.map((item) => {
+      const { sys, fields } = item;
+      
       return {
-        id: item.sys.id,
-        title: item.fields.title || '',
-        summary: item.fields.summary || '',
-        content: item.fields.content,
-        date: item.fields.date || '',
-        author: item.fields.author || '',
-        featuredImage: item.fields?.featuredImage?.fields?.file?.url || null,
+        id: sys.id,
+        title: fields.title || '',
+        summary: fields.summary || '',
+        content: fields.content,
+        date: fields.date || '',
+        author: fields.author || '',
+        featuredImage: fields.featuredImage?.fields?.file?.url || null,
       };
     });
   } catch (error) {
